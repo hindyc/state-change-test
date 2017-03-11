@@ -13,7 +13,13 @@ def main():
     snmp_session = Session(hostname='10.99.1.11', community='l1ver3ad', version=2)
     interface_descrs = snmp_session.walk('.1.3.6.1.2.1.2.2.1.2')
     interface_changed = snmp_session.walk('.1.3.6.1.2.1.2.2.1.9')
-    print interface_descrs
+
+    for iface in interface_descrs:
+        interface_index = int(iface.oid.rsplit('.', 1)[1])
+        try:
+            print "%i %s %s" %(interface_index, iface.value, interface_changed[interface_index].value)
+        except IndexError:
+            break
 
 if __name__ == "__main__":
     main()
