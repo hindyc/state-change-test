@@ -5,6 +5,7 @@ the heck NetMRI is smoking.
 """
 
 from easysnmp import Session
+import datetime
 
 def main():
     """
@@ -17,7 +18,8 @@ def main():
     for iface in interface_descrs:
         interface_index = int(iface.oid.rsplit('.', 1)[1])
         try:
-            print "%i %s %s" %(interface_index, iface.value, interface_changed[interface_index].value)
+	    date_changed = datetime.datetime.now() - datetime.timedelta(seconds=int(interface_changed[interface_index].value))
+            print "%i %s %s %s" %(interface_index, iface.value, interface_changed[interface_index].value, date_changed)
         except IndexError:
             break
 
